@@ -8,18 +8,32 @@ templates=Jinja2Templates(directory="templates")
 
 router = APIRouter()
 
+
+@router.get("/signup")
+def show_signup_page(request:Request):
+    return templates.TemplateResponse("signup.html",{"request":request})
+
+@router.post("/signup")
+def login_user(request:Request , email=Form(...),password=Form(...)):
+    result=db.auth.sign_up({
+        "email":email,
+        "password":password
+    })
+    if result:
+        return RedirectResponse('/login')
+
 @router.get('/')
 def home():
     return RedirectResponse('/login')
 
 
 @router.get("/login")
-def show_signup_page(request:Request):
+def show_login_page(request:Request):
     return templates.TemplateResponse("login.html",{"request":request})
 
 
 @router.post("/login")
-def singup_user(request:Request , email=Form(...),password=Form(...)):
+def login_user(request:Request , email=Form(...),password=Form(...)):
     result=db.auth.sign_in_with_password({
         "email":email,
         "password":password

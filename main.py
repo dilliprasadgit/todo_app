@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
 
 
 from src.routes.auth import router as auth_router
@@ -17,3 +18,5 @@ app.include_router(dashboard_router)
 app.include_router(tasks_route)
 app.include_router(edit_router)
 app.include_router(delete_router)
+
+app.mount("/static", StaticFiles(directory="static"), name="static")

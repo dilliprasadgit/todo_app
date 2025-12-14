@@ -1,219 +1,116 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Todo Dashboard</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .header {
-            background: white;
-            padding: 30px 40px;
-            border-radius: 10px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-            margin-bottom: 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .greeting {
-            font-size: 28px;
-            color: #333;
-            font-weight: 600;
-        }
-
-        .add-task-btn {
-            padding: 12px 24px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-
-        .add-task-btn:hover {
-            transform: translateY(-2px);
-        }
-
-        .add-task-btn:active {
-            transform: translateY(0);
-        }
-
-        .tasks-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 20px;
-        }
-
-        .task-card {
-            background: white;
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        .task-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-        }
-
-        .task-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 15px;
-        }
-
-        .task-title {
-            font-size: 20px;
-            font-weight: 600;
-            color: #333;
-            flex: 1;
-            margin-right: 10px;
-        }
-
-        .task-status {
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-
-        .status-pending {
-            background: #fff3cd;
-            color: #856404;
-        }
-
-        .status-in-progress {
-            background: #cfe2ff;
-            color: #084298;
-        }
-
-        .status-completed {
-            background: #d1e7dd;
-            color: #0f5132;
-        }
-
-        .task-description {
-            color: #666;
-            font-size: 14px;
-            line-height: 1.6;
-            margin-bottom: 20px;
-        }
-
-        .task-actions {
-            display: flex;
-            gap: 10px;
-        }
-
-        .edit-btn, .delete-btn {
-            flex: 1;
-            padding: 10px;
-            border: none;
-            border-radius: 5px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-
-        .edit-btn {
-            background: #667eea;
-            color: white;
-        }
-
-        .edit-btn:hover {
-            background: #5568d3;
-            transform: translateY(-2px);
-        }
-
-        .delete-btn {
-            background: #dc3545;
-            color: white;
-        }
-
-        .delete-btn:hover {
-            background: #c82333;
-            transform: translateY(-2px);
-        }
-
-        .edit-btn:active, .delete-btn:active {
-            transform: translateY(0);
-        }
-
-        @media (max-width: 768px) {
-            .header {
-                flex-direction: column;
-                gap: 20px;
-                text-align: center;
-            }
-
-            .add-task-btn {
-                width: 100%;
-            }
-
-            .tasks-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+    <title>Dashboard | Todo App</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Ionicons for icons -->
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 </head>
+
 <body>
-    <div class="container">
-        <div class="header">
-            <h1 class="greeting">Hello, John !</h1>
-            <button class="add-task-btn"><a style="text-decoration: none;color: #f9fbfa;" href="/tasks/new">+ Add New Task</a></button>
-        </div>
+    <div class="dashboard-grid fade-in">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div
+                style="font-size: 1.5rem; font-weight: 700; color: var(--text-main); margin-bottom: 2rem; padding: 0 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                <ion-icon name="checkbox" style="color: var(--primary);"></ion-icon> Todo App
+            </div>
 
-        <div class="tasks-grid">
+            <nav style="flex: 1;">
+                <a href="/dashboard" class="nav-link {% if not current_status %}active{% endif %}">
+                    <ion-icon name="grid-outline" style="margin-right: 0.75rem; font-size: 1.25rem;"></ion-icon>
+                    Dashboard
+                </a>
+                <a href="/dashboard?status=pending"
+                    class="nav-link {% if current_status == 'pending' %}active{% endif %}">
+                    <ion-icon name="time-outline" style="margin-right: 0.75rem; font-size: 1.25rem;"></ion-icon>
+                    Pending
+                </a>
+                <a href="/dashboard?status=in-progress"
+                    class="nav-link {% if current_status == 'in-progress' %}active{% endif %}">
+                    <ion-icon name="trending-up-outline" style="margin-right: 0.75rem; font-size: 1.25rem;"></ion-icon>
+                    In Progress
+                </a>
+                <a href="/dashboard?status=completed"
+                    class="nav-link {% if current_status == 'completed' %}active{% endif %}">
+                    <ion-icon name="checkmark-done-circle-outline"
+                        style="margin-right: 0.75rem; font-size: 1.25rem;"></ion-icon>
+                    Completed
+                </a>
+            </nav>
 
-            {% for tasks in tasks %}
-
-            <div class="task-card">
-                <div class="task-header">
-                    <h3 class="task-title">{{ tasks.title}}</h3>
-                </div>
-                <span class="task-status status-in-progress">{{ tasks.status}}</span>
-                <p class="task-description">{{ tasks.description}}</p>
-                <!-- <p>complete</p> -->
-                <br>
-                <div class="task-actions">
-                    <button class="edit-btn" ><a style="text-decoration: none;color:  #f9fbfa;" href="/tasks/{{tasks.id}}">Edit</a></button>
-                    <button class="delete-btn"><a style="text-decoration: none;color:  #f9fbfa;" href="/details/delete/{{tasks.id}}">Delete</a></button>
+            <div style="padding-top: 1rem; border-top: var(--glass-border);">
+                <div
+                    style="display: flex; align-items: center; justify-content: space-between; padding: 0.5rem; color: var(--text-muted); font-size: 0.9rem;">
+                    <div style="display: flex; align-items: center; gap: 0.75rem;">
+                        <div
+                            style="width: 32px; height: 32px; background: linear-gradient(135deg, #6366f1, #a855f7); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white;">
+                            <ion-icon name="person"></ion-icon>
+                        </div>
+                        <span>John Doe</span>
+                    </div>
+                    <a href="/logout" title="Logout"
+                        style="color: var(--text-muted); font-size: 1.25rem; display: flex; align-items: center; transition: color 0.2s;"
+                        onmouseover="this.style.color='#ef4444'" onmouseout="this.style.color='var(--text-muted)'">
+                        <ion-icon name="log-out-outline"></ion-icon>
+                    </a>
                 </div>
             </div>
-            {{ item }}
-           {% endfor %}
+        </aside>
 
-            
+        <!-- Main Content -->
+        <main class="main-content">
+            <header style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                <div>
+                    <h1 style="font-size: 1.75rem; font-weight: 700;">My Tasks</h1>
+                    <p style="color: var(--text-muted); margin-top: 0.25rem;">Manage your tasks and track progress</p>
+                </div>
+                <!-- <a href="/tasks/new" class="btn btn-primary" style="width: auto;">+ New Task</a> -->
+            </header>
 
-        
-            
-        </div>
+            <div class="task-grid">
+                {% for task in tasks %}
+                <div
+                    class="glass-panel task-card {% if task.status == 'completed' %}status-done{% elif task.status == 'in-progress' %}status-inprogress{% else %}status-todo{% endif %}">
+                    <div>
+                        <div class="task-header">
+                            <h3 class="task-title">{{ task.title }}</h3>
+                            <span
+                                class="badge {% if task.status == 'completed' %}badge-done{% elif task.status == 'in-progress' %}badge-in-progress{% else %}badge-todo{% endif %}">
+                                {{ task.status }}
+                            </span>
+                        </div>
+                        <p class="task-desc">{{ task.description }}</p>
+                    </div>
+
+                    <div class="task-footer">
+                        <div style="font-size: 0.8rem; color: var(--text-muted);">
+                            Created recently
+                        </div>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <a href="/tasks/{{ task.id }}" class="action-btn" title="Edit">
+                                <ion-icon name="create-outline"></ion-icon>
+                            </a>
+                            <a href="/details/delete/{{ task.id }}" class="action-btn" title="Delete"
+                                style="color: var(--danger);">
+                                <ion-icon name="trash-outline"></ion-icon>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </main>
+
+        <a href="/tasks/new" class="add-task-fab" title="Add New Task">
+            <ion-icon name="add"></ion-icon>
+        </a>
     </div>
 </body>
+
 </html>

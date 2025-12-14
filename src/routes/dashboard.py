@@ -32,18 +32,24 @@ router = APIRouter()
 
 
 @router.get("/dashboard")
-def show_dashboard(request: Request):
+def show_dashboard(request: Request, status: str = None):
     user = get_loggedin_user(request)
 
     if user:
-        # get only logged-in user's tasks
-        result = db.table('tasks').select("*").eq("user_id", user.id).execute()
+        # Start constructing the query
+        query = db.table('tasks').select("*").eq("user_id", user.id)
+        
+        # Apply filter if status is provided
+        if status:
+            query = query.eq("status", status)
+            
+        result = query.execute()
         
         tasks = result.data if result.data else []   # avoid None / empty crash
 
         return templates.TemplateResponse(
             "dashboard.html",
-            {"request": request, "tasks": tasks}
+            {"request": request, "tasks": tasks, "current_status": status}
         )
 
     return RedirectResponse('/login', status_code=303)
